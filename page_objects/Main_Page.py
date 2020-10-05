@@ -26,13 +26,13 @@ class Main_Page(Base_Page):
         if temperature is not None:
             self.write("The temperature parsed is: %s"%temperature,level="debug")
             #Strip away the degree centigrade
-            temperature = temperature.split()[1] 
+            temperature = temperature.split()[0] 
             
             try:
                 temperature = int(temperature)
             except Exception as e:
                 self.write("Error type casting temperature to int",level="error")
-                self.write("Obtained the temperature %s"%temperature)
+                self.write("Obtained the temperature %d"%temperature)
                 self.write("Python says: " + str(e))
             else:
                 result_flag = True

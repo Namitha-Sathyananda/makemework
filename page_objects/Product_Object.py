@@ -128,7 +128,7 @@ class Product_Object():
         result_flag &= True if after_cart_quantity - before_cart_quantity == 1 else False 
 
         return result_flag
-
+ 
     @Wrapit._screenshot
     def click_cart_button(self):
         "Click the cart button"
