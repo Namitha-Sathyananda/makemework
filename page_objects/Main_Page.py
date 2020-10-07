@@ -50,7 +50,7 @@ class Main_Page(Base_Page):
         "Choose to buy moisturizer or sunscreen"
         result_flag = False 
         product_type = product_type.lower()
-        if product_type in ['sunscreens','moisturizers']:
+        if product_type in ['sunscreens','moisturizers','verify_cart']:
             result_flag = self.click_element(self.BUY_BUTTON%product_type)
             self.conditional_write(result_flag,
             positive="Clicked the buy button for %s"%product_type,
