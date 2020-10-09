@@ -14,7 +14,7 @@ class Cart_Page(Base_Page):
     CART_ROW_COLUMN = locators.CART_ROW_COLUMN
     CART_TOTAL = locators.CART_TOTAL
     COL_NAME = 0
-    COL_PRICE = 0 
+    COL_PRICE = 1
 
     def start(self):
         "Override the start method of base"
@@ -40,7 +40,7 @@ class Cart_Page(Base_Page):
             item = []
             for col in column_elements:
                 text = self.get_dom_text(col)
-            item.append(text.decode('ascii'))
+                item.append(text.decode('ascii'))
             item = self.process_item(item)
             cart_items.append(item)
 
@@ -58,7 +58,7 @@ class Cart_Page(Base_Page):
     
     def verify_extra_items(self,expected_cart,actual_cart):
         "Items which exist in actual but not in expected"
-        item_match_flag = False 
+        item_match_flag = True 
         for item in actual_cart:
             #Does the item exist in the product list
             found_flag = False 
@@ -98,14 +98,17 @@ class Cart_Page(Base_Page):
                         price_match_flag = True 
                     else:
                         actual_price = item[self.COL_PRICE]
-                    break    
-            item_match_flag &= found_flag and price_match_flag
-            self.conditional_write(found_flag,
-            positive="Found the expected item '%s' in the cart"%product.name,
-            negative="Did not find the expected item '%s' in the cart"%product.name)
-            self.conditional_write(price_match_flag,
-            positive="... the expected price matched to %d"%product.price,
-            negative="... the expected price did not match. Expected: %d but Obtained: %d"%(product.price,actual_price)) 
+                    break  
+
+        item_match_flag &= found_flag and price_match_flag
+            
+        self.conditional_write(found_flag,
+        positive="Found the expected item '%s' in the cart"%product.name,
+        negative="Did not find the expected item '%s' in the cart"%product.name)
+            
+        self.conditional_write(price_match_flag,
+        positive="... the expected price matched to %d"%product.price,
+        negative="... the expected price did not match. Expected: %d but Obtained: %d"%(product.price,actual_price)) 
 
         return item_match_flag
 
@@ -125,7 +128,7 @@ class Cart_Page(Base_Page):
         "Verify the total in the cart"
         expected_total = 0
         for product in expected_cart:
-            expected_total = product.price 
+            expected_total += product.price 
         actual_total = self.get_total_price()
         result_flag = actual_total == expected_total
         self.conditional_write(result_flag,
